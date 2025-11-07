@@ -1,8 +1,8 @@
 {
   "name": "@jeelidev/personal-neo4j-memory-server",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": false,
-  "description": "Personal MCP Memory Server with Neo4j backend - Enhanced Cloudflare Access support for reliable tunneling",
+  "description": "Personal MCP Memory Server with Neo4j backend - Enhanced Cloudflare Access support with robust tunnel management and remove functionality",
   "homepage": "https://github.com/jeelidev/personal-neo4j-memory-server",
   "repository": {
     "type": "git",

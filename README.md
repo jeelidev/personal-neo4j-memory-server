@@ -137,6 +137,12 @@ This package includes automated tunnel management for **any TCP service**:
 # List configured tunnels
 ./cloudflare-tcp-tunnels.sh list
 
+# Remove existing tunnel
+./cloudflare-tcp-tunnels.sh remove my-service
+
+# Clean all tunnels (resets configuration)
+./cloudflare-tcp-tunnels.sh clean
+
 # Stop all tunnels
 ./cloudflare-tcp-tunnels.sh stop
 ```

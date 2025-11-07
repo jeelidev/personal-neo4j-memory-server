@@ -1,0 +1,28 @@
+[Unit]
+Description=Cloudflare Access TCP Tunnels Manager
+Documentation=https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=necrowolf
+Group=necrowolf
+ExecStart=/home/necrowolf/scripts/cloudflare-tcp-tunnels.sh start
+ExecStop=/home/necrowolf/scripts/cloudflare-tcp-tunnels.sh stop
+ExecReload=/home/necrowolf/scripts/cloudflare-tcp-tunnels.sh restart
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log /var/run
+
+[Install]
+WantedBy=multi-user.target

@@ -1,12 +1,12 @@
 {
-  "name": "@jeelidev/mcp-neo4j-memory-server-fixed",
-  "version": "3.2.1",
+  "name": "@jeelidev/personal-neo4j-memory-server",
+  "version": "1.0.0",
   "private": false,
-  "description": "Fixed MCP Memory Server with Neo4j backend - Enhanced Cloudflare Tunnel support",
-  "homepage": "https://github.com/jeelidev/fixed-neo4j-memory-server",
+  "description": "Personal MCP Memory Server with Neo4j backend - Enhanced Cloudflare Access support for reliable tunneling",
+  "homepage": "https://github.com/jeelidev/personal-neo4j-memory-server",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jeelidev/fixed-neo4j-memory-server.git"
+    "url": "git+https://github.com/jeelidev/personal-neo4j-memory-server.git"
   },
   "type": "module",
   "main": "index.js",
@@ -34,9 +34,13 @@
     "memory",
     "knowledge",
     "graph",
-    "neo4j"
+    "neo4j",
+    "cloudflare",
+    "tunneling",
+    "bolt",
+    "zero-trust"
   ],
-  "author": "sylweriusz",
+  "author": "jeelidev",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.0",

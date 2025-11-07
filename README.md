@@ -1,8 +1,8 @@
-# Neo4j Memory Server
+# Personal Neo4j Memory Server - Enhanced Cloudflare Access Support
 
-A Model Context Protocol (MCP) server that provides AI assistants with persistent, intelligent memory capabilities using Neo4j's graph database with unified architecture
+A Model Context Protocol (MCP) server that provides AI assistants with persistent, intelligent memory capabilities using Neo4j's graph database with **enhanced Cloudflare Access tunneling support**.
 
-## What it does
+## 🎯 What it does
 
 This server enables AI assistants to:
 - **Remember** - Store memories as interconnected knowledge nodes with observations and metadata
@@ -10,51 +10,57 @@ This server enables AI assistants to:
 - **Connect** - Create meaningful relationships between memories with batch operations and cross-references
 - **Organize** - Separate memories by project using different databases
 - **Evolve** - Track how knowledge develops over time with temporal metadata and relationship networks
+- **🚀 NEW: Reliable Remote Access** - Connect through Cloudflare Zero Trust Access from anywhere
 
-## Features
+## ✨ Key Features
 
 ### Core Capabilities
 - 🧠 **Graph Memory** - Memories as nodes, relationships as edges, observations as content
 - 🔍 **Unified Search** - Semantic vectors, exact matching, wildcards, and graph traversal in one tool
 - 🔗 **Smart Relations** - Typed connections with strength, source tracking, and temporal metadata
 - 📊 **Multi-Database** - Isolated project contexts with instant switching
+- ☁️ **Cloudflare Access Ready** - Zero Trust tunneling for secure remote connections
 
-### Advanced Operations  
+### Advanced Operations
 - ⚡ **Batch Operations** - Create multiple memories with relationships in single request using localId
 - 🎯 **Context Control** - Response detail levels: minimal (lists), full (complete data), relations-only
 - 📅 **Time Queries** - Filter by relative ("7d", "30d") or absolute dates on any temporal field
 - 🌐 **Graph Traversal** - Navigate networks in any direction with depth control
+- 🛡️ **Zero Trust Security** - mTLS encryption through Cloudflare Access
 
 ### Architecture
 - 🚀 **MCP Native** - Seamless integration with Claude Desktop and MCP clients
 - 💾 **Persistent Storage** - Neo4j graph database with GDS plugin for vector operations
+- ☁️ **Cloudflare Optimized** - Solved BOLT protocol tunneling issues
 - ⚠️ **Zero-Fallback** - Explicit errors for reliable debugging, no silent failures
 
-## Technical Highlights
+## 🚀 Quick Start - NPM Installation
 
-- Built on Neo4j for scalable graph operations
-- Vector embeddings using sentence transformers (384 dimensions)
-- Clean architecture with domain-driven design
-- Supports GDS plugin for advanced vector operations (necessary)
-- **Unified Architecture** - 4 comprehensive tools for complete memory operations
-
-## Quick Start
-
+### Option 1: Install from NPM (Recommended)
 ```bash
-npm install @sylweriusz/mcp-neo4j-memory-server
+# Coming soon - after publication
+npm install @jeelidev/personal-neo4j-memory-server
 ```
 
-Add to Claude Desktop config:
+### Option 2: Install from GitHub (Available Now)
+```bash
+npx -y https://github.com/jeelidev/personal-neo4j-memory-server.git
+```
 
+## 📝 Claude Code Configuration
+
+### Add to Claude Desktop/Claude Code config:
+
+#### For NPM Package (when published):
 ```json
 {
   "mcpServers": {
     "memory": {
       "command": "npx",
-      "args": ["-y", "@sylweriusz/mcp-neo4j-memory-server"],
+      "args": ["-y", "@jeelidev/personal-neo4j-memory-server"],
       "env": {
         "NEO4J_URI": "bolt://localhost:7687",
-        "NEO4J_USERNAME": "neo4j", 
+        "NEO4J_USERNAME": "neo4j",
         "NEO4J_PASSWORD": "your-password"
       }
     }
@@ -62,7 +68,99 @@ Add to Claude Desktop config:
 }
 ```
 
-## Neo4j Setup
+#### For GitHub Installation (Current):
+```json
+{
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "https://github.com/jeelidev/personal-neo4j-memory-server.git"],
+      "env": {
+        "NEO4J_URI": "bolt://localhost:7687",
+        "NEO4J_USERNAME": "neo4j",
+        "NEO4J_PASSWORD": "your-password"
+      }
+    }
+  }
+}
+```
+
+## ☁️ Cloudflare Access Setup (CRITICAL FOR REMOTE SETUP)
+
+### 🎯 The Problem Solved
+Traditional Cloudflare Tunnel with TCP (`cloudflared tunnel --url tcp://localhost:7687`) **fails** for Neo4j BOLT protocol, causing HTTP 400 errors.
+
+### ✅ The Solution: Cloudflare Access
+Use `cloudflared access tcp` instead of `cloudflared tunnel` for reliable BOLT protocol connections.
+
+### 1. Cloudflare Dashboard Configuration
+Navigate to: **Zero Trust → Networks → Tunnels → Public Hostnames**
+
+Add Public Hostname:
+- **Type**: TCP
+- **Hostname**: `neo4j-bolt.jeelidev.uk` (or your domain)
+- **Service**: `tcp://localhost:7687`
+
+### 2. Local Cloudflare Access Command
+```bash
+# Start tunnel for Neo4j BOLT
+cloudflared access tcp --hostname neo4j-bolt.jeelidev.uk --url localhost:7687
+
+# For multiple services (MySQL, PostgreSQL, SSH, etc.)
+cloudflared access tcp --hostname mysql-server.jeelidev.uk --url localhost:3306
+cloudflared access tcp --hostname postgres-server.jeelidev.uk --url localhost:5432
+```
+
+### 3. SSH Configuration (Optional but Recommended)
+Add to `~/.ssh/config`:
+```ssh
+Host *.jeelidev.uk
+  ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h
+```
+
+## 🛠️ Automated TCP Tunnels Service
+
+### 📁 Included Scripts
+This package includes automated tunnel management for **any TCP service**:
+
+#### `cloudflare-tcp-tunnels.sh` - Main Script
+```bash
+# Start all configured tunnels
+./cloudflare-tcp-tunnels.sh start
+
+# Check tunnel status
+./cloudflare-tcp-tunnels.sh status
+
+# Add new tunnel
+./cloudflare-tcp-tunnels.sh add my-service api.jeelidev.uk 3000
+
+# List configured tunnels
+./cloudflare-tcp-tunnels.sh list
+
+# Stop all tunnels
+./cloudflare-tcp-tunnels.sh stop
+```
+
+#### Pre-configured Services:
+- **Neo4j BOLT**: `neo4j-bolt.jeelidev.uk:7687`
+- **Neo4j Routing**: `neo4j-routing.jeelidev.uk:7688`
+- **MySQL**: `mysql-server.jeelidev.uk:3306`
+- **PostgreSQL**: `postgres-server.jeelidev.uk:5432`
+- **SSH**: `ssh-server.jeelidev.uk:22`
+- **Redis**: `redis-server.jeelidev.uk:6379`
+- **MongoDB**: `mongodb-server.jeelidev.uk:27017`
+- **Custom Services**: Easily add more with `add` command
+
+#### `cloudflare-tcp-tunnels.service` - Systemd Service
+```bash
+# Install for automatic startup on boot
+sudo cp cloudflare-tcp-tunnels.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable cloudflare-tcp-tunnels.service
+sudo systemctl start cloudflare-tcp-tunnels.service
+```
+
+## 🗄️ Neo4j Setup
 
 ### Working setup: DozerDB with GDS Plugin
 
@@ -89,7 +187,19 @@ docker run \
 # RETURN gds.similarity.cosine([1,2,3], [2,3,4]) as similarity
 ```
 
-## Unified Tools
+### Remote Neo4j with Cloudflare Access
+For remote Neo4j servers, use Cloudflare Access instead of traditional tunneling:
+
+```bash
+# On remote server: configure Zero Trust hostname
+# On local machine: start access tunnel
+cloudflared access tcp --hostname neo4j-remote.jeelidev.uk --url localhost:7687
+
+# Connect Neo4j Browser to: bolt://localhost:7687
+# MCP connects through localhost proxy
+```
+
+## 🛠️ Unified Tools
 
 The server provides **4 unified MCP tools** that integrate automatically with Claude:
 
@@ -98,12 +208,12 @@ The server provides **4 unified MCP tools** that integrate automatically with Cl
 - `memory_modify` - Comprehensive modification operations (update, delete, observations, relations)
 - `database_switch` - Switch database context for isolated environments
 
-## Memory Structure
+## 📊 Memory Structure
 
 ```json
 {
   "id": "dZ$abc123",
-  "name": "Project Alpha", 
+  "name": "Project Alpha",
   "memoryType": "project",
   "metadata": {"status": "active", "priority": "high"},
   "observations": [
@@ -116,7 +226,7 @@ The server provides **4 unified MCP tools** that integrate automatically with Cl
 }
 ```
 
-## System Prompt
+## 🎯 System Prompt
 
 ### The simplest use of the memory tool, the following usually is more than enough.
 
@@ -127,21 +237,77 @@ The server provides **4 unified MCP tools** that integrate automatically with Cl
 - Begin each session by:
   1. Switching to this project's database
   2. Searching memory for data relevant to the user's prompt
-
 ```
 
+## 🔧 Troubleshooting
 
-## Troubleshooting
+### Cloudflare Access Issues
+**❌ HTTP 400 Error with Traditional Tunneling:**
+```bash
+# WRONG - This causes HTTP 400 errors
+cloudflared tunnel --url tcp://localhost:7687
 
-**Vector Search Issues:**
+# CORRECT - Use Cloudflare Access
+cloudflared access tcp --hostname neo4j-bolt.jeelidev.uk --url localhost:7687
+```
+
+**✅ Connection Verification:**
+```bash
+# Verify tunnel is working
+netcat -zv localhost 7687
+# Should show: Connection to localhost port 7687 [tcp/*] succeeded!
+```
+
+### Vector Search Issues:
 - Check logs for `[VectorSearch] GDS Plugin detected`
 - GDS Plugin requires DozerDB setup (see Neo4j Setup section)
 
-**Connection Issues:**
+### Connection Issues:
 - Verify Neo4j is running: `docker ps`
 - Test connection: `curl http://localhost:7474`
 - Check credentials in environment variables
+- Ensure Cloudflare Access tunnels are running
 
-## License
+## 📚 Cloudflare Access Commands Reference
+
+### Supported Protocols:
+```bash
+# TCP Services (Neo4j, MySQL, PostgreSQL, etc.)
+cloudflared access tcp --hostname service.domain.com --url localhost:PORT
+
+# SSH Services
+cloudflared access ssh --hostname ssh.domain.com
+
+# HTTP/HTTPS Services
+cloudflared access https://app.domain.com
+
+# RDP (Windows Remote Desktop)
+cloudflared access rdp --hostname rdp.domain.com --local-port 3389
+
+# VNC
+cloudflared access vnc --hostname vnc.domain.com --local-port 5900
+```
+
+## 🚀 Production Deployment
+
+### For Production Use:
+1. **Install systemd service** for automatic tunnel startup
+2. **Configure proper SSL certificates** in Cloudflare Zero Trust
+3. **Set up access policies** for additional security
+4. **Monitor tunnel health** with the provided status command
+5. **Use environment variables** for sensitive configuration
+
+## 📄 License
 
 MIT
+
+## 🤝 Contributing
+
+This is a personal fork enhanced for Cloudflare Access compatibility. Original project by sylweriusz.
+
+### Key Enhancements in This Fork:
+- ✅ **Cloudflare Access TCP compatibility**
+- ✅ **Enhanced error logging for tunneling issues**
+- ✅ **Automated tunnel management scripts**
+- ✅ **Production-ready systemd service**
+- ✅ **Comprehensive documentation**

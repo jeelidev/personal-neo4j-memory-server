@@ -23,8 +23,8 @@ import { registerMemoryTools, HandlerSet } from "./shared-tool-definitions";
 
 // Create an MCP server with proper configuration
 const server = new McpServer({
-  name: "neo4j-memory-server", 
-  version: "3.2.0" // Version from package.json
+  name: "neo4j-memory-server-fixed",
+  version: "3.2.1" // Fixed version with Cloudflare Tunnel support
 });
 
 // Lazy handler factory - safe for tool scanning
